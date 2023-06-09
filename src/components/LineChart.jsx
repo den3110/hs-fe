@@ -1,42 +1,12 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { useEffect, useState } from "react";
-import getDataApi from "../api/get_data";
-import moment from "moment"
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+
+const LineChart = ({ isCustomLineColors = false, isDashboard = false, data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [data2, setData2]= useState({data: {data: []}})
-  console.log(data2?.data?.data?.map(item=> ({x: moment(item?.createdDate).format("mm:ss"), y: item?.rsrp})))
-  const data = [
-    {
-      id: "rsrp",
-      color: tokens("dark").greenAccent[500],
-      data: data2?.data?.data?.map(item=> ({x: moment(item?.createdDate).format("mm:ss"), y: item?.rsrp})),
-    },
-    {
-      id: "rsrq",
-      color: tokens("dark").blueAccent[300],
-      data: data2?.data?.data?.map(item=> ({x: moment(item?.createdDate).format("mm:ss"), y: item?.rsrq})),
-    },
-    {
-      id: "sinr",
-      color: tokens("dark").redAccent[200],
-      data: data2?.data?.data?.map(item=> ({x: moment(item?.createdDate).format("HH:mm"), y: item?.sinr})),
-    },
-  ];
-
-  console.log(data)
-  
-  useEffect(()=> {
-    (async ()=> {
-      const result= await getDataApi()
-      setData2(result)
-    })()
-  }, [])
-
+ 
   return (
     <ResponsiveLine
       data={data}
@@ -107,7 +77,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }}
       enableGridX={false}
       enableGridY={false}
-      pointSize={8}
+      pointSize={10}
       pointColor={{ theme: "background" }}
       pointBorderWidth={2}
       pointBorderColor={{ from: "serieColor" }}
@@ -126,12 +96,12 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           itemOpacity: 0.75,
           symbolSize: 12,
           symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
+          symbolBorderColor: "rgba(255, 255, 255, .5)",
           effects: [
             {
               on: "hover",
               style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
+                itemBackground: "rgba(255, 255, 255, .03)",
                 itemOpacity: 1,
               },
             },

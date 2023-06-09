@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 // import { mockDataTeam } from "../../data/mockData";
@@ -8,9 +8,10 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import {useEffect, useState } from "react"
 import getDeviceApi from "../../api/get_device";
-
+import {useNavigate } from "react-router-dom"
 
 const Team = () => {
+  const navigate= useNavigate()
   const [data, setData]= useState({data: {devices: []}})
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -23,10 +24,13 @@ const Team = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "userId",
-      headerName: "User id",
+      field: "Action",
+      headerName: "Action",
       flex: 1,
-    },
+      renderCell: (params)=> {
+        return <Button onClick={()=> navigate("/dashboard", {state: {deviceId: params.row._id}})} type={"button"} color={"primary"} variant={"contained"}>Truy cập thiết bị</Button>
+      }
+    }
   ];
 
   useEffect(()=> {
