@@ -87,12 +87,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getDataApi();
-      setData2(result);
-      const intervalId = setInterval(async () => {
+      try {
         const result = await getDataApi();
         setData2(result);
-      }, 60000);
+        const intervalId = setInterval(async () => {
+          const result = await getDataApi();
+          setData2(result);
+        }, 60000);
+      } catch (error) {
+        navigate("/login", {replace: true})        
+      }
     })();
   }, []);
 
