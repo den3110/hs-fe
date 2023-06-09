@@ -9,12 +9,16 @@ import Header from "../../components/Header";
 import {useEffect, useState } from "react"
 import getDeviceApi from "../../api/get_device";
 import {useNavigate } from "react-router-dom"
+import swal from "sweetalert";
+import deleteDeviceApi from "../../api/delete_device";
+import AddDevice from "./AddDevice";
 
 const Team = () => {
   const navigate= useNavigate()
   const [data, setData]= useState({data: {devices: []}})
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [change, setChange]= useState(false)
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
     {
@@ -28,7 +32,25 @@ const Team = () => {
       headerName: "Action",
       flex: 1,
       renderCell: (params)=> {
-        return <Button onClick={()=> navigate("/dashboard", {state: {deviceId: params.row._id}})} type={"button"} color={"primary"} variant={"contained"}>Truy cập thiết bị</Button>
+        return <>
+          <Button onClick={()=> navigate("/dashboard", {state: {deviceId: params.row._id}})} type={"button"} color={"primary"} variant={"contained"}>Truy cập thiết bị</Button>
+          <Button style={{marginLeft: 16}} onClick={()=> {
+            swal("Bạn có muốn xóa thiết bị này không", {buttons: {
+              ok: "Ok",
+              cancel: "Cancel"
+            }})
+            .then(async value=> {
+              if(value=== "ok") {
+                const result= await deleteDeviceApi(params.row._id)
+                swal("Thông báo", "Xóa thiết bị thành công", "success")
+                .then(()=> setChange(prev=> !prev))
+              }
+              else {
+                return null
+              }
+            })
+          }} type={"button"} color={"primary"} variant={"contained"}>Xóa thiết bị</Button>
+        </>
       }
     }
   ];
@@ -38,11 +60,12 @@ const Team = () => {
       const result= await getDeviceApi()
       setData(result)
     })()
-  }, [])
+  }, [change])
 
   return (
     <Box m="20px">
       <Header title="Device" subtitle="Managing the Device" />
+      <AddDevice setChange={setChange} />
       <Box
         m="40px 0 0 0"
         height="75vh"

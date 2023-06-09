@@ -42,7 +42,7 @@ const Dashboard = () => {
     {
       id: "rsrp",
       color: tokens("dark").greenAccent[500],
-      data: data2?.data?.data?.map((item) => ({
+      data: data2?.data?.data?.reverse()?.map((item) => ({
         x: moment(item?.createdDate).format("HH:mm"),
         y: item?.rsrp,
       })),
@@ -50,7 +50,7 @@ const Dashboard = () => {
     {
       id: "rsrq",
       color: tokens("dark").blueAccent[300],
-      data: data2?.data?.data?.map((item) => ({
+      data: data2?.data?.data?.reverse()?.map((item) => ({
         x: moment(item?.createdDate).format("HH:mm"),
         y: item?.rsrq,
       })),
@@ -58,7 +58,7 @@ const Dashboard = () => {
     {
       id: "sinr",
       color: tokens("dark").redAccent[200],
-      data: data2?.data?.data?.map((item) => ({
+      data: data2?.data?.data?.reverse()?.map((item) => ({
         x: moment(item?.createdDate).format("HH:mm"),
         y: item?.sinr,
       })),
@@ -92,122 +92,94 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
-        const result = await getDataApi();
+        const result = await getDataApi(location.state?.deviceId);
         setData2(result);
-        const intervalId = setInterval(async () => {
-          const result = await getDataApi();
+        setInterval(async () => {
+          const result = await getDataApi(location.state?.deviceId);
           setData2(result);
         }, 60000);
       } catch (error) {
         navigate("/login", {replace: true})        
       }
     })();
-  }, []);
-
-  return (
-    <Box m="20px">
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-        <Box></Box>
-      </Box>
-
-      {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 2 */}
-        <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            {/* <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box> */}
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} data={data} />
-            {/* <ChartNew /> */}
-          </Box>
+  }, [location.state?.deviceId]);
+  if(location.state?.deviceId) {
+    return (
+      <Box m="20px">
+        {/* HEADER */}
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+          <Box></Box>
         </Box>
+  
+        {/* GRID & CHARTS */}
         <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
         >
+          {/* ROW 2 */}
           <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
+            gridColumn="span 6"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Lịch sử gần đây
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            p="15px"
-          >
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Pci"}
-            </Box>
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Rsrp"}
-            </Box>
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Rsrq"}
-            </Box>
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Sinr"}
-            </Box>
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Longitude"}
-            </Box>
-            <Box color={colors.grey[100]} style={{ flex: 1 }}>
-              {"Latitude"}
-            </Box>
-          </Box>
-          {data2?.data?.data.map((transaction, i) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              mt="25px"
+              p="0 30px"
+              display="flex "
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              {/* <Box>
+                <Typography
+                  variant="h5"
+                  fontWeight="600"
+                  color={colors.grey[100]}
+                >
+                  Revenue Generated
+                </Typography>
+                <Typography
+                  variant="h3"
+                  fontWeight="bold"
+                  color={colors.greenAccent[500]}
+                >
+                  $59,342.32
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton>
+                  <DownloadOutlinedIcon
+                    sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                  />
+                </IconButton>
+              </Box> */}
+            </Box>
+            <Box height="250px" m="-20px 0 0 0">
+              <LineChart isDashboard={true} data={data} />
+              {/* <ChartNew /> */}
+            </Box>
+          </Box>
+          <Box
+            gridColumn="span 6"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            overflow="auto"
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              colors={colors.grey[100]}
+              p="15px"
+            >
+              <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                Lịch sử gần đây
+              </Typography>
+            </Box>
+            <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -215,107 +187,140 @@ const Dashboard = () => {
               p="15px"
             >
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.pci}
+                {"Pci"}
               </Box>
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.rsrp}
+                {"Rsrp"}
               </Box>
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.rsrq}
+                {"Rsrq"}
               </Box>
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.sinr}
+                {"Sinr"}
               </Box>
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.longitude}
+                {"Longitude"}
               </Box>
               <Box color={colors.grey[100]} style={{ flex: 1 }}>
-                {transaction.latitude}
+                {"Latitude"}
               </Box>
             </Box>
-          ))}
-        </Box>
-
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 3"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            cellid
-          </Typography>
+            {data2?.data?.data.map((transaction, i) => (
+              <Box
+                key={`${transaction.txId}-${i}`}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                borderBottom={`4px solid ${colors.primary[500]}`}
+                p="15px"
+              >
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.pci}
+                </Box>
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.rsrp}
+                </Box>
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.rsrq}
+                </Box>
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.sinr}
+                </Box>
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.longitude?.toFixed(6)}
+                </Box>
+                <Box color={colors.grey[100]} style={{ flex: 1 }}>
+                  {transaction.latitude?.toFixed(6)}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+  
+          {/* ROW 3 */}
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
+            gridColumn="span 3"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            p="30px"
           >
-            <Typography
-              variant="h3"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              {data2?.data?.data?.[0]?.cellId} Unit
+            <Typography variant="h5" fontWeight="600">
+              cellid
             </Typography>
-            <Typography
-              variant="h5"
-              // color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              mt="25px"
             >
-              {moment(data2?.data?.data?.[0]?.createdDate).format(
-                "DD-MM-YYYY HH:mm"
-              )}
-            </Typography>
+              <Typography
+                variant="h3"
+                color={colors.greenAccent[500]}
+                sx={{ mt: "15px" }}
+              >
+                {data2?.data?.data?.[0]?.cellId} Unit
+              </Typography>
+              <Typography
+                variant="h5"
+                // color={colors.greenAccent[500]}
+                sx={{ mt: "15px" }}
+              >
+                {moment(data2?.data?.data?.[0]?.createdDate).format(
+                  "DD-MM-YYYY HH:mm"
+                )}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box
-          gridColumn="span 3"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            pci
-          </Typography>
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
+            gridColumn="span 3"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            p="30px"
           >
-            <Typography
-              variant="h3"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              {data2?.data?.data?.[0]?.pci} Unit
+            <Typography variant="h5" fontWeight="600">
+              pci
             </Typography>
-            <Typography
-              variant="h5"
-              // color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              mt="25px"
             >
-              {moment(data2?.data?.data?.[0]?.createdDate).format(
-                "DD-MM-YYYY HH:mm"
-              )}
-            </Typography>
+              <Typography
+                variant="h3"
+                color={colors.greenAccent[500]}
+                sx={{ mt: "15px" }}
+              >
+                {data2?.data?.data?.[0]?.pci} Unit
+              </Typography>
+              <Typography
+                variant="h5"
+                // color={colors.greenAccent[500]}
+                sx={{ mt: "15px" }}
+              >
+                {moment(data2?.data?.data?.[0]?.createdDate).format(
+                  "DD-MM-YYYY HH:mm"
+                )}
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            gridColumn="span 6"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            padding="30px"
+          >
+            <Box height="100%">
+              <div ref={ref} className="wpb_map_wraper"></div>
+            </Box>
           </Box>
         </Box>
-        <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Box height="100%">
-            <div ref={ref} className="wpb_map_wraper"></div>
-          </Box>
-        </Box>
+        <br />
       </Box>
-    </Box>
-  );
+    );
+  }
+  else {
+    return <></>
+  }
 };
 
 export default Dashboard;

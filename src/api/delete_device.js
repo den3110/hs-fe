@@ -2,10 +2,10 @@ import axios from "axios";
 import { API_URL } from "../config";
 import Cookies from "js-cookie"
 
-const getDataApi = async (deviceId) => {
+const deleteDeviceApi = async (deviceId) => {
   const res = await axios({
-    url: API_URL + "/api/v1/data/"+ deviceId || "",
-    method: "get",
+    url: API_URL + "/api/v1/device/"+ deviceId,
+    method: "delete",
     headers: {
         "Authorization": "Bearer "+ Cookies.get("accessToken")
     }
@@ -14,4 +14,4 @@ const getDataApi = async (deviceId) => {
   return result;
 };
 
-export default getDataApi;
+export default deleteDeviceApi;
