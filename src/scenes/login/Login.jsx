@@ -67,7 +67,9 @@ function Login() {
                         .then(() =>
                           Cookies.set("accessToken", result?.data?.token)
                         )
-                        .then(() => Cookies.set("uid", result?.data?.userId));
+                        .then(() => Cookies.set("uid", result?.data?.userId))
+                        .then(() => window.location.href= window.location.origin+ "/team")
+
                     } else {
                       swal(
                         "Thông báo",

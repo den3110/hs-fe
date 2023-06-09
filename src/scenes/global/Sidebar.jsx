@@ -120,7 +120,7 @@ const Sidebar = () => {
               
               icon={<PeopleOutlinedIcon />}
               selected={selected}
-              setSelected={()=> {navigate("/login"); Cookies.remove("accessToken")}}
+              setSelected={()=> {navigate("/login"); Cookies.remove("accessToken"); Cookies.remove("uid")}}
             />
           </Box>
         </Menu>
