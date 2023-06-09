@@ -34,12 +34,16 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data2, setData2] = useState({ data: { data: [] } });
+  console.log(data2?.data?.data?.map((item) => ({
+    x: moment(item?.createdDate).format("HH:mm"),
+    y: item?.rsrq,
+  })))
   const data = [
     {
       id: "rsrp",
       color: tokens("dark").greenAccent[500],
       data: data2?.data?.data?.map((item) => ({
-        x: moment(item?.createdDate).format("mm:ss"),
+        x: moment(item?.createdDate).format("HH:mm"),
         y: item?.rsrp,
       })),
     },
@@ -47,7 +51,7 @@ const Dashboard = () => {
       id: "rsrq",
       color: tokens("dark").blueAccent[300],
       data: data2?.data?.data?.map((item) => ({
-        x: moment(item?.createdDate).format("mm:ss"),
+        x: moment(item?.createdDate).format("HH:mm"),
         y: item?.rsrq,
       })),
     },
