@@ -34,11 +34,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data2, setData2] = useState({ data: { data: [] } });
-  console.log(data2?.data?.data?.map((item) => ({
-    x: moment(item?.createdDate).format("HH:mm"),
-    y: item?.rsrq,
-  })))
-  const data = [
+  const [data, setData]= useState( [
     {
       id: "rsrp",
       color: tokens("dark").greenAccent[500],
@@ -63,7 +59,35 @@ const Dashboard = () => {
         y: item?.sinr,
       })),
     },
-  ];
+  ])
+  useEffect(()=> {
+    setData([
+      {
+        id: "rsrp",
+        color: tokens("dark").greenAccent[500],
+        data: data2?.data?.data?.reverse()?.map((item) => ({
+          x: moment(item?.createdDate).format("HH:mm"),
+          y: item?.rsrp,
+        })),
+      },
+      {
+        id: "rsrq",
+        color: tokens("dark").blueAccent[300],
+        data: data2?.data?.data?.reverse()?.map((item) => ({
+          x: moment(item?.createdDate).format("HH:mm"),
+          y: item?.rsrq,
+        })),
+      },
+      {
+        id: "sinr",
+        color: tokens("dark").redAccent[200],
+        data: data2?.data?.data?.reverse()?.map((item) => ({
+          x: moment(item?.createdDate).format("HH:mm"),
+          y: item?.sinr,
+        })),
+      },
+    ])
+  }, [data2])
   useEffect(() => {
     if (data2?.data?.data?.[0]?.latitude) {
       ref.current.innerHTML = `<iframe
