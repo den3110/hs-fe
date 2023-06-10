@@ -229,7 +229,7 @@ const Dashboard = () => {
                 {"Latitude"}
               </Box>
             </Box>
-            {data2?.data?.data.map((transaction, i) => (
+            {data2?.data?.data?.reverse().map((transaction, i) => (
               <Box
                 key={`${transaction.txId}-${i}`}
                 display="flex"
@@ -281,14 +281,14 @@ const Dashboard = () => {
                 color={colors.greenAccent[500]}
                 sx={{ mt: "15px" }}
               >
-                {data2?.data?.data?.[0]?.cellId} Unit
+                {data2?.data?.data?.reverse()?.[0]?.cellId} Unit
               </Typography>
               <Typography
                 variant="h5"
                 // color={colors.greenAccent[500]}
                 sx={{ mt: "15px" }}
               >
-                {moment(data2?.data?.data?.[0]?.createdDate).format(
+                {moment(data2?.data?.data?.reverse()?.[0]?.createdDate).format(
                   "DD-MM-YYYY HH:mm"
                 )}
               </Typography>
@@ -314,14 +314,14 @@ const Dashboard = () => {
                 color={colors.greenAccent[500]}
                 sx={{ mt: "15px" }}
               >
-                {data2?.data?.data?.[0]?.pci} Unit
+                {data2?.data?.data?.reverse()?.[0]?.pci} Unit
               </Typography>
               <Typography
                 variant="h5"
                 // color={colors.greenAccent[500]}
                 sx={{ mt: "15px" }}
               >
-                {moment(data2?.data?.data?.[0]?.createdDate).format(
+                {moment(data2?.data?.data?.reverse()?.[0]?.createdDate).format(
                   "DD-MM-YYYY HH:mm"
                 )}
               </Typography>
