@@ -63,11 +63,11 @@ const Dashboard = () => {
   useEffect(()=> {
     setData([
       {
-        id: "rsrp",
-        color: tokens("dark").greenAccent[500],
+        id: "sinr",
+        color: tokens("dark").redAccent[200],
         data: data2?.data?.data?.reverse()?.map((item) => ({
           x: moment(item?.createdDate).format("HH:mm"),
-          y: item?.rsrp,
+          y: item?.sinr,
         })),
       },
       {
@@ -78,14 +78,16 @@ const Dashboard = () => {
           y: item?.rsrq,
         })),
       },
+     
       {
-        id: "sinr",
-        color: tokens("dark").redAccent[200],
+        id: "rsrp",
+        color: tokens("dark").greenAccent[500],
         data: data2?.data?.data?.reverse()?.map((item) => ({
           x: moment(item?.createdDate).format("HH:mm"),
-          y: item?.sinr,
+          y: item?.rsrp,
         })),
       },
+      
     ])
   }, [data2])
   useEffect(() => {
